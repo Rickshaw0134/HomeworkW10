@@ -1,0 +1,50 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Population Density of Malaysia by State in 2023",
+    "width": 800,
+    "height": 400,
+    "projection": {"type": "mercator"},
+    "layer": [
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/Rickshaw0134/FIT3179-HomeworkW9/refs/heads/main/ne_10m_admin_1_states_provinces.json",
+          "format": {"type": "topojson", "feature": "ne_10m_admin_1_states_provinces"}
+        },
+        "transform": [
+          {
+            "lookup": "properties.name",
+            "from": {
+              "data": {
+                "url": "https://raw.githubusercontent.com/Rickshaw0134/FIT3179-HomeworkW9/refs/heads/main/state_pop.csv"
+              },
+              "key": "State",
+              "fields": ["Population_absolute", "Area"]
+            }
+          },
+          {
+            "calculate": "round((datum.Population_absolute / datum.Area) * 100) / 100", 
+            "as": "Population Density"
+          }
+        ],
+        "mark": {"type": "geoshape"},
+        "encoding": {
+          "color": {
+            "field": "Population Density",
+            "type": "quantitative",
+            "scale": {"type": "log"}
+          },
+          "tooltip": [
+            {"field": "properties.name", "type": "nominal", "title": "State"},
+            {"field": "Population Density", "type": "quantitative", "title": "Population Density"}
+          ]
+        }
+      },
+      {
+        "mark": {"type": "geoshape", "stroke": "lightgray", "strokeWidth": 0.5},
+        "data": {
+          "graticule": {"step": [2, 2], "extent": [[119, 9], [99, 0.5]]}
+        }
+      }
+    ]
+  }
+  

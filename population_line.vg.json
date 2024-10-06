@@ -1,0 +1,158 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": { "text": "Malaysian Population from 1970 to 2024" },
+    "data": {
+      "url": "https://raw.githubusercontent.com/Rickshaw0134/HomeworkW10/refs/heads/main/malaysia_population.csv"
+    },
+    "params": [
+      {
+        "name": "gender_selection",
+        "bind": {
+          "input":"select",
+          "options": [
+          null,
+          "male",
+          "female",
+          "both"
+        ],
+        "labels":[
+          "Show All",
+          "Male",
+          "Female",
+          "Both"
+        ],
+        "name": "Gender Selection: "
+        }
+      },
+      {
+    "name": "Year",
+    "value": 0,
+    "bind": {
+      "input": "range",
+      "min": 1970,
+      "max": 2024,
+      "step": 1,
+      "name": "Year: "
+  } }
+  
+    ],
+    "transform": [
+      {"filter": "gender_selection == null || datum.sex == gender_selection"},
+      {"filter": "datum.year > Year"},
+      {
+    "calculate": "datum.population * 1000",
+    "as": "actual population"}
+    ],
+    "layer": [
+      {
+        "mark": "line",
+        "encoding": {
+          "x": { "field": "year", "type": "nominal" },
+          "y": { "field": "population", "type": "quantitative", "axis": {
+        "title": "Population (1000s)"
+      } },
+          "color": { 
+            "field": "sex", 
+            "type": "nominal", 
+            "title": "Sex",
+            "scale": {
+              "domain":[
+                "male",
+                "female",
+                "both"
+              ],
+            "range": [
+              "#377eb8", 
+              "#e41a1c", 
+              "#2ca02c"
+                ]
+              }
+            },
+          "tooltip": [
+            { "field": "year", "type": "quantitative" },
+            {
+              "field": "actual population",
+              "type": "quantitative",
+              "format": ","
+            },
+            { "field": "sex", "type": "nominal" }
+          ]
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 350,
+          "dy": -60
+        },
+        "encoding": {
+          "x": {
+            "signal": "year",
+            "type": "quantitative"
+          },
+          "text": { "value": "Population remained stagnant in" }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 350,
+          "dy": -45
+        },
+        "encoding": {
+          "x": {
+            "signal": "year",
+            "type": "quantitative"
+          },
+          "text": { "value": "2020 as covid was prevalent so" }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 350,
+          "dy": -30
+        },
+        "encoding": {
+          "x": {
+            "signal": "year",
+            "type": "quantitative"
+          },
+          "text": { "value": "citizens could not leave their houses" }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": -50
+        },
+        "encoding": {
+          "x": {
+            "signal": "year",
+            "type": "quantitative"
+          },
+          "text": { "value": "Population steadily increased from 1990 to 2012" }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 100,
+          "dy": 60
+        },
+        "encoding": {
+          "x": {
+            "signal": "year",
+            "type": "quantitative"
+          },
+          "text": { "value": "Significant increase in males than females in malaysia from 1994 onwards" }
+        }
+      }
+    ]
+  }
+  
